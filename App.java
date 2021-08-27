@@ -23,6 +23,15 @@ public class App extends JFrame{
 			g.drawString(winner, 100, 300);
 			return ;
 		}
+		else if(turnCount >=9){
+			g.setColor(Color.white);
+			g.fillRect(0,0,w,h);
+			g.setColor(Color.BLACK);
+			String winner = "Draw ";
+			g.drawString(winner, 100, 300);
+			return ;
+		}
+
 		g.setColor(Color.white);
 		g.fillRect(0,0,w,h);
 		g.setColor(Color.WHITE);	
