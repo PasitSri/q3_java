@@ -1,31 +1,55 @@
+import java.awt.*;
+import javax.swing.*;
 import java.util.Scanner;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 
-public class App{
-	char player; 
+
+public class App extends JFrame{
+	String player; 
 	boolean winner;
 	int turnCount, row, col;
-	char[][] boardArray = {{'-', '-', '-'}, {'-', '-', '-'}, {'-', '-', '-'}};	
+	String[][] boardArray = {{"-", "-", "-"}, {"-", "-", "-"}, {"-", "-", "-"}};	
+	int w=900, h=900;
+	int size = 300;
 
-	//public 
+	public void paint(Graphics g){
+		g.setColor(Color.white);
+		g.fillRect(0,0,w,h);
+		g.setColor(Color.WHITE);	
+		g.setFont(new Font("Ubuntu", Font.PLAIN, 70));
+		g.setColor(Color.BLACK);
+		int x=100,y=100;
+		for(int r=0; r<3; r++){
+			g.drawLine(0, r*size, w, r*size);
+			for(int c=0; c<3; c++){
+				g.drawLine(c*size, 0, c*size, h);
+				g.drawString(boardArray[r][c], x, y);
+				x+=300;
+			}
+			x=100;
+			y+=300;
+		}
+	}
 
 	public void changePlayer(){
-		if (this.player == 'o'){
-			player = 'x';
+		if (this.player == "o"){
+			player = "x";
 		}else{
-			player = 'o';
+			player = "o";
 		}
 	}
 
 	public void displayBoard(){
-		System.out.println('\n');
+		System.out.println("\n");
 		for(int i=0; i<3; i++){
-			System.out.println(""+boardArray[i][0]+'|'+boardArray[i][1]+'|'+boardArray[i][2]);
+			System.out.println(""+boardArray[i][0]+"|"+boardArray[i][1]+"|"+boardArray[i][2]);
 		}
-		System.out.println('\n');
+		System.out.println("\n");
 	}
 
 	public boolean addPosition(){
-		if (boardArray[row][col] != '-'){
+		if (boardArray[row][col] != "-"){
 			System.out.println("");
 			System.out.println("This position is not empty");
 			return false;
@@ -89,11 +113,30 @@ public class App{
 		}
 	}
 
+	public void checkPosition(int x, int y){
+		row = y/size;
+		col = x/size;
+		System.out.printf("%d %d\n", row, col);
+		if (addPosition()){
+			checkWinner();
+			changePlayer();
+		}
+	}
+
 	public App(){
-		player = 'o';
+		player = "o";
 		winner = false;
 		turnCount = 0;
-		playGame();
+		//playGame();
+		setSize(900, 900);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				checkPosition(e.getX(), e.getY());
+				repaint();
+			}
+		});
+		setVisible(true);
 	}
 
 	public static void main(String[] args){
