@@ -14,10 +14,18 @@ public class App extends JFrame{
 	int size = 300;
 
 	public void paint(Graphics g){
+		g.setFont(new Font("Ubuntu", Font.PLAIN, 70));
+		if(checkWinner()){
+			g.setColor(Color.white);
+			g.fillRect(0,0,w,h);
+			g.setColor(Color.BLACK);
+			String winner = "Player "+player+" are winner";
+			g.drawString(winner, 100, 300);
+			return ;
+		}
 		g.setColor(Color.white);
 		g.fillRect(0,0,w,h);
 		g.setColor(Color.WHITE);	
-		g.setFont(new Font("Ubuntu", Font.PLAIN, 70));
 		g.setColor(Color.BLACK);
 		int x=100,y=100;
 		for(int r=0; r<3; r++){
@@ -118,7 +126,9 @@ public class App extends JFrame{
 		col = x/size;
 		System.out.printf("%d %d\n", row, col);
 		if (addPosition()){
-			checkWinner();
+			if (checkWinner()){
+				repaint();
+			}
 			changePlayer();
 		}
 	}
